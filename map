@@ -1,0 +1,25 @@
+void CreateMap() {
+	
+	int i = 0;
+	//上面的墙
+	for (i = 0; i < 60; i += 2) {
+		wprintf(L"%lc",WALL);
+	}
+	//左边的墙
+	for (i = 1; i <= 30; i++) {
+		SetPos(0,i);
+		wprintf(L"%lc", WALL);
+	}
+	//右边的墙
+	for (i = 1; i <= 30; i++) {
+		SetPos(58,i);
+		wprintf(L"%lc", WALL);
+	}
+	//下面的墙
+	for (i = 2; i < 57; i += 2) {
+		SetPos(i,30);
+		wprintf(L"%lc", WALL);
+	}
+ 
+	SetPos(0, 33);
+}
