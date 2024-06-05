@@ -1,0 +1,12 @@
+      List<String> orderList = new ArrayList<>();
+        sort.stream().forEach(e -> {
+            orderList.add(e.getProperty());
+            orderList.add(e.getDirection().toString());
+        });
+        if (Objects.isNull(queryDto)) {
+            queryDto = new FacilityMaintenanceQueryDTO();
+        }
+        QueryWrapper<FacilityMaintenanceQueryDTO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(StringUtils.isNotBlank(queryDto.getFacilityClassId()), "facility_class_id", queryDto.getFacilityClassId());
+        PageUtils.transferSort(queryWrapper, sort);
+   List<FacilityMaintenanceVO> maintenanceAllList = facilityMaintenanceMapper.getFacilityMaintenanceAllList(queryDto, orderList.get(0), orderList.get(1));
