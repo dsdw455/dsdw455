@@ -1,0 +1,35 @@
+# 设置节日祝福语
+    # 情人节祝福语
+    str_Valentine = cf.get("configuration", "str_Valentine")
+    print(str_Valentine)
+
+    # 三八妇女节祝福语
+    str_Women = cf.get("configuration", "str_Women")
+    print(str_Women)
+
+    # 平安夜祝福语
+    str_Christmas_Eve = cf.get("configuration", "str_Christmas_Eve")
+    print(str_Christmas_Eve)
+
+    # 圣诞节祝福语
+    str_Christmas = cf.get("configuration", "str_Christmas")
+    print(str_Christmas)
+
+    # 她生日的时候的祝福语
+    str_birthday = cf.get("configuration", "str_birthday")
+    print(str_birthday)
+
+
+    # 开始守护女友
+    t = Thread(target=start_care, name='start_care')
+    t.start()
+
+
+
+
+# 接收女友消息监听器
+
+# 女友微信名
+my_girl_friend = bot.friends().search(my_lady_wechat_name)[0]
+@bot.register(chats=my_girl_friend, except_self=False)
+def print_others(msg):
