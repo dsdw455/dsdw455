@@ -1,0 +1,56 @@
+package com.yelang.project.extend.earthquake.controller;
+import java.util.List;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.yelang.framework.aspectj.lang.annotation.Log;
+import com.yelang.framework.aspectj.lang.enums.BusinessType;
+import com.yelang.framework.web.controller.BaseController;
+import com.yelang.framework.web.domain.AjaxResult;
+import com.yelang.framework.web.page.TableDataInfo;
+import com.yelang.project.extend.earthquake.domain.EarthquakeInfo;
+import com.yelang.project.extend.earthquake.domain.GeographicNameVo;
+import com.yelang.project.extend.earthquake.domain.crawler.CeicEarthquake;
+import com.yelang.project.extend.earthquake.service.ICeicEarthquakeService;
+import com.yelang.project.extend.earthquake.service.IGeographicNameService;
+import com.yelang.project.extend.scenicspot.domain.ScenicSpotDistVo;
+import com.yelang.project.extend.scenicspot.service.IScenicSpotService;
+@Controller
+@RequestMapping("/ceiceq/info")
+public class CeicEarthquakeInfoController extends BaseController{
+ 
+	private String prefix = "ceicearthquake/info";
+    @Autowired
+    private IGeographicNameService geoNameService;
+    //跳转附近城市页面，用get请求
+    @RequiresPermissions("ceiceq:info:nearbycities")
+    @GetMapping("/nearbycities/{pkId}")
+    public String nearbyCities(@PathVariable("pkId")Long pkId,ModelMap mmap){
+    	mmap.put("pkId", pkId);
+    	CeicEarthquake earthQuake = ceicEarthQuakeService.getById(pkId);
+    	mmap.put("earthQuake", earthQuake);
+    	List<GeographicNameVo> dataList = geoNameService.findListByEarthId(pkId);
+    	mmap.put("dataList", dataList);
+        return prefix + "/nearbycities";
+    }
+    
+    /**
+     * 获取附近城市列表数据，用post
+     * @param pkId
+     * @return
+     */
+    @PostMapping("/nearbycities/{pkId}")
+    @ResponseBody
+    public AjaxResult nearbycities(@PathVariable("pkId")Long pkId){
+        AjaxResult ar = AjaxResult.success();
+        List<GeographicNameVo> dataList = geoNameService.findListByEarthId(pkId);
+        ar.put("data", dataList);
+        return ar;
+    }
+}
